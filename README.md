@@ -14,4 +14,5 @@ Prometheus data from CI run
 
 * `up==0` - show targets which never came up
   In scaleup test we're destroying existing CoreOS workers, so some kubelets may 
-* `kubelet_pleg_relist_interval_microseconds{instance="10.0.148.63:10250"}`
+* `kubelet_cgroup_manager_latency_microseconds`
+  Latency in microseconds for cgroup manager operations

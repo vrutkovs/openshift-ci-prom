@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 5,
-  "iteration": 1548857307949,
+  "iteration": 1548866167752,
   "links": [],
   "panels": [
     {
@@ -121,7 +121,7 @@
           "refId": "B"
         }
       ],
-      "title": "Pod info",
+      "title": "Terminated reason",
       "transform": "table",
       "type": "table"
     },
@@ -332,7 +332,7 @@
           "expr": "kube_pod_status_phase{namespace=\"$namespace\", pod=\"$pod\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ phase }}",
+          "legendFormat": "{{ phase }} ",
           "refId": "B"
         },
         {
@@ -434,7 +434,7 @@
           "refId": "A"
         },
         {
-          "expr": "kube_pod_container_status_running{namespace=\"$namespace\", pod=\"$pod\"}",
+          "expr": "",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Running",
@@ -452,7 +452,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Container Restarts and Status",
+      "title": "Container Restarts",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -550,8 +550,8 @@
     ]
   },
   "time": {
-    "from": "2019-01-29T19:36:33.904Z",
-    "to": "2019-01-29T21:52:11.300Z"
+    "from": "2019-01-29T19:39:32.726Z",
+    "to": "2019-01-29T21:34:05.453Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -581,5 +581,5 @@
   "timezone": "",
   "title": "Pod info",
   "uid": "AGEeIb_mk",
-  "version": 12
+  "version": 14
 }

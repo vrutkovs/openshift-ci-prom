@@ -117,7 +117,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -125,7 +124,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 8,
+      "id": 14,
       "legend": {
         "avg": false,
         "current": false,
@@ -149,17 +148,46 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_running_container_count",
+          "expr": "kube_node_status_condition{status=\"unknown\",condition=\"Ready\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "{{ node }} unknown Ready",
+          "refId": "C"
+        },
+        {
+          "expr": "kube_node_status_condition{status=\"false\",condition=\"Ready\"}==1",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ node }} not Ready",
+          "refId": "D"
+        },
+        {
+          "expr": "kube_node_status_condition{status=\"true\",condition=\"DiskPressure\"}==1",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ node }} DiskPressure",
           "refId": "A"
+        },
+        {
+          "expr": "kube_node_status_condition{status=\"true\",condition=\"OutOfDisk\"}==1",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ node }} PIDPressure",
+          "refId": "B"
+        },
+        {
+          "expr": "kube_node_status_condition{status=\"true\",condition=\"MemoryPressure\"}==1",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ node }} OutOfDisk",
+          "refId": "E"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Number of containers per node",
+      "title": "Node Ready errors",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -175,7 +203,6 @@
       },
       "yaxes": [
         {
-          "decimals": null,
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -462,7 +489,7 @@
         "x": 12,
         "y": 18
       },
-      "id": 11,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -486,10 +513,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_runtime_operations_errors",
+          "expr": "kubelet_running_container_count",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ instance }} {{ operation_type }}",
           "refId": "A"
         }
       ],
@@ -497,7 +523,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "kubelet_runtime_operations_errors",
+      "title": "Number of containers per node",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -513,6 +539,7 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -703,6 +730,91 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 11,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kubelet_runtime_operations_errors",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }} {{ operation_type }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "kubelet_runtime_operations_errors",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
@@ -744,5 +856,5 @@
   "timezone": "",
   "title": "Kubelet",
   "uid": "gQSRgx_iz",
-  "version": 16
+  "version": 17
 }

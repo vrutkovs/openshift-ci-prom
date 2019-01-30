@@ -16,6 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
+  "iteration": 1548853638103,
   "links": [],
   "panels": [
     {
@@ -57,25 +58,18 @@
       "steppedLine": true,
       "targets": [
         {
-          "expr": "up{instance=~\".*9100\"}",
+          "expr": "up{node=\"$node\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ instance }} node exporter",
-          "refId": "C"
-        },
-        {
-          "expr": "up{instance=~\".*10250\"}",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{ instance }} kubelet",
-          "refId": "A"
+          "legendFormat": "up",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Kubelet and node exporter availability",
+      "title": "Kubelet up status",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -148,35 +142,35 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kube_node_status_condition{status=\"unknown\",condition=\"Ready\"}==1",
+          "expr": "kube_node_status_condition{status=\"unknown\",condition=\"Ready\",node=\"$node\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ node }} unknown Ready",
           "refId": "C"
         },
         {
-          "expr": "kube_node_status_condition{status=\"false\",condition=\"Ready\"}==1",
+          "expr": "kube_node_status_condition{status=\"false\",condition=\"Ready\",node=\"$node\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ node }} not Ready",
           "refId": "D"
         },
         {
-          "expr": "kube_node_status_condition{status=\"true\",condition=\"DiskPressure\"}==1",
+          "expr": "kube_node_status_condition{status=\"true\",condition=\"DiskPressure\",node=\"$node\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ node }} DiskPressure",
           "refId": "A"
         },
         {
-          "expr": "kube_node_status_condition{status=\"true\",condition=\"OutOfDisk\"}==1",
+          "expr": "kube_node_status_condition{status=\"true\",condition=\"OutOfDisk\",node=\"$node\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ node }} PIDPressure",
           "refId": "B"
         },
         {
-          "expr": "kube_node_status_condition{status=\"true\",condition=\"MemoryPressure\"}==1",
+          "expr": "kube_node_status_condition{status=\"true\",condition=\"MemoryPressure\",node=\"$node\"}==1",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ node }} OutOfDisk",
@@ -261,9 +255,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_pleg_relist_latency_microseconds{quantile='0.5'}",
+          "expr": "kubelet_pleg_relist_latency_microseconds{node=\"$node\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "{{ quantile }} quantile",
           "refId": "A"
         }
       ],
@@ -345,9 +340,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_pleg_relist_interval_microseconds{quantile='0.5'}",
+          "expr": "kubelet_pleg_relist_interval_microseconds{node=\"$node\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "{{ quantile }} quantile",
           "refId": "A"
         }
       ],
@@ -429,9 +425,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_cgroup_manager_latency_microseconds{quantile='0.5'}",
+          "expr": "kubelet_cgroup_manager_latency_microseconds{quantile='0.5',node=\"$node\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "{{ operation_type }}",
           "refId": "A"
         }
       ],
@@ -513,9 +510,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_running_container_count",
+          "expr": "kubelet_running_container_count{node=\"$node\"}",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "containers per node",
           "refId": "A"
         }
       ],
@@ -598,10 +596,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(kubelet_runtime_operations[1m])",
+          "expr": "irate(kubelet_runtime_operations{node=\"$node\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ instance }} {{ operation_type }}",
+          "legendFormat": "{{ operation_type }}",
           "refId": "A"
         }
       ],
@@ -612,7 +610,7 @@
       "title": "kubelet_runtime_operations rate",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -683,10 +681,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_runtime_operations_latency_microseconds{quantile=\"0.5\"}",
+          "expr": "kubelet_runtime_operations_latency_microseconds{node=\"$node\", quantile=\"0.5\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ instance }} {{ operation_type }}",
+          "legendFormat": "{{ operation_type }}",
           "refId": "A"
         }
       ],
@@ -697,7 +695,7 @@
       "title": "kubelet_runtime_operations_latency_microseconds",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -768,10 +766,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubelet_runtime_operations_errors",
+          "expr": "kubelet_runtime_operations_errors{node=\"$node\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ instance }} {{ operation_type }}",
+          "legendFormat": "{{ operation_type }}",
           "refId": "A"
         }
       ],
@@ -782,7 +780,7 @@
       "title": "kubelet_runtime_operations_errors",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -822,7 +820,34 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "ip-10-0-148-63.ec2.internal",
+          "value": "ip-10-0-148-63.ec2.internal"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(kube_node_info, node)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "node",
+        "multi": false,
+        "name": "node",
+        "options": [],
+        "query": "label_values(kube_node_info, node)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "2019-01-29T19:46:11.433Z",
@@ -856,5 +881,5 @@
   "timezone": "",
   "title": "Kubelet",
   "uid": "gQSRgx_iz",
-  "version": 17
+  "version": 22
 }

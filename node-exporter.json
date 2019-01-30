@@ -441,7 +441,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -609,7 +609,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -834,8 +834,8 @@
     ]
   },
   "time": {
-    "from": "2019-01-29T19:48:59.728Z",
-    "to": "2019-01-29T21:22:27.329Z"
+    "from": "2019-01-29T19:43:21.421Z",
+    "to": "2019-01-29T21:36:01.023Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -865,5 +865,5 @@
   "timezone": "",
   "title": "Node-exporter",
   "uid": "1Xgi-xlik",
-  "version": 8
+  "version": 9
 }

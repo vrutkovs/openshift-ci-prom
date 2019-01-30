@@ -159,7 +159,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "kubelet_running_container_count",
+      "title": "Number of containers per node",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -742,7 +742,7 @@
     ]
   },
   "timezone": "",
-  "title": "CI data",
+  "title": "Kubelet",
   "uid": "gQSRgx_iz",
-  "version": 13
+  "version": 16
 }

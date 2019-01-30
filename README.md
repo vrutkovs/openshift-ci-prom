@@ -7,5 +7,5 @@ Prometheus data from CI run
 * Open Grafana at http://localhost:3000, add Prometheus source at 'http://<any valid IP>:9090'
   Use `podman inspect` to find out Prometheus IP or use internal/public IP, as both services are 
   listening on 0.0.0.0
-* Load the dashboard from 'dashboard.json'
+* Load dashboards from files
 * Adjust the time in range selector

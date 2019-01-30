@@ -8,3 +8,4 @@ Prometheus data from CI run
   Use `podman inspect` to find out Prometheus IP or use internal/public IP, as both services are 
   listening on 0.0.0.0
 * Load the dashboard from 'dashboard.json'
+* Adjust the time in range selector

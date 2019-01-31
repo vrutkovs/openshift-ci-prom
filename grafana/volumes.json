@@ -20,6 +20,175 @@
   "panels": [
     {
       "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "volume_operation_total_seconds_sum{plugin_name=\"kubernetes.io/aws-ebs\"} / volume_operation_total_seconds_count{plugin_name=\"kubernetes.io/aws-ebs\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ operation_name }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "volume_operation avg",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 21,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "storage_operation_duration_seconds_sum{volume_plugin=\"kubernetes.io/aws-ebs\"} / storage_operation_duration_seconds_count{volume_plugin=\"kubernetes.io/aws-ebs\"}",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{ operation_name }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "volume_operation avg",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
       "bars": true,
       "dashLength": 10,
       "dashes": false,
@@ -28,7 +197,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 6,
       "legend": {
@@ -113,7 +282,7 @@
         "h": 8,
         "w": 7,
         "x": 8,
-        "y": 0
+        "y": 8
       },
       "id": 8,
       "legend": {
@@ -198,7 +367,7 @@
         "h": 8,
         "w": 9,
         "x": 15,
-        "y": 0
+        "y": 8
       },
       "id": 14,
       "legend": {
@@ -283,7 +452,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 8
+        "y": 16
       },
       "hideTimeOverride": false,
       "id": 2,
@@ -369,7 +538,7 @@
         "h": 8,
         "w": 7,
         "x": 8,
-        "y": 8
+        "y": 16
       },
       "id": 16,
       "legend": {
@@ -454,7 +623,7 @@
         "h": 8,
         "w": 9,
         "x": 15,
-        "y": 8
+        "y": 16
       },
       "hideTimeOverride": false,
       "id": 18,
@@ -540,7 +709,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "id": 4,
       "legend": {
@@ -627,7 +796,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 24
       },
       "id": 12,
       "legend": {
@@ -705,6 +874,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 17,
   "style": "dark",
   "tags": [],
@@ -712,8 +882,8 @@
     "list": []
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "2019-01-31T05:25:45.756Z",
+    "to": "2019-01-31T06:28:12.819Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -743,5 +913,5 @@
   "timezone": "",
   "title": "Volumes",
   "uid": "uF8bGY_iz",
-  "version": 10
+  "version": 12
 }

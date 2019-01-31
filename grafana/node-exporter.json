@@ -16,6 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
+  "iteration": 1548921599758,
   "links": [],
   "panels": [
     {
@@ -23,6 +24,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "Prometheus",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -30,14 +32,12 @@
         "x": 0,
         "y": 0
       },
-      "id": 4,
+      "id": 2,
       "legend": {
-        "alignAsTable": false,
         "avg": false,
         "current": false,
         "max": false,
         "min": false,
-        "rightSide": false,
         "show": true,
         "total": false,
         "values": false
@@ -56,27 +56,32 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "up{namespace=~\".*api.*\"}",
+          "expr": "node_load1{instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ pod }} {{ namespace }}",
+          "legendFormat": "load 1",
           "refId": "A"
-        }
-      ],
-      "thresholds": [
+        },
         {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": 1,
-          "yaxis": "left"
+          "expr": "node_load5{instance=\"$instance\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "load 5",
+          "refId": "B"
+        },
+        {
+          "expr": "node_load15{instance=\"$instance\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "load 15",
+          "refId": "C"
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Up",
+      "title": "Load Average",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -125,7 +130,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 2,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -149,25 +154,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(KubeApiserverOperator_adds[1m])",
+          "expr": "irate(node_context_switches_total{instance=\"$instance\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "adds rate",
+          "legendFormat": "{{ instance }}",
           "refId": "A"
-        },
-        {
-          "expr": "KubeApiserverOperator_retries",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "retries",
-          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "KubeApiserverOperator_adds and retries",
+      "title": "node_context_switches_total irate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -240,18 +238,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "KubeApiserverOperator_queue_latency",
+          "expr": "node_nf_conntrack_entries{instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "queue {{ quantile }} latency",
+          "legendFormat": "{{ instance }}",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": null,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "KubeApiserverOperator_queue_latency",
+      "title": "node_nf_conntrack_entries",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -267,7 +274,7 @@
       },
       "yaxes": [
         {
-          "format": "clockms",
+          "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -300,7 +307,7 @@
         "x": 12,
         "y": 9
       },
-      "id": 7,
+      "id": 4,
       "legend": {
         "avg": false,
         "current": false,
@@ -324,10 +331,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "KubeApiserverOperator_work_duration",
+          "expr": "irate(node_arp_entries{instance=\"$instance\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "work duration {{ quantile }} latency",
+          "legendFormat": "{{ instance }} {{ device }}",
           "refId": "A"
         }
       ],
@@ -335,90 +342,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "KubeApiserverOperator_work_duration",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "clockms",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 18
-      },
-      "id": 9,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "irate(apiserver_audit_event_total[1m])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "apiserver_audit_event_total rate",
+      "title": "node_arp_entries rate",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -464,10 +388,10 @@
       "gridPos": {
         "h": 9,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 18
       },
-      "id": 11,
+      "id": 15,
       "legend": {
         "avg": false,
         "current": false,
@@ -480,7 +404,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
+      "nullPointMode": "connected",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -488,29 +412,105 @@
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
-      "steppedLine": false,
+      "steppedLine": true,
       "targets": [
         {
-          "expr": "apiserver_current_inflight_requests{requestKind=\"readOnly\"}",
+          "expr": "irate(node_disk_read_bytes_total{instance=\"$instance\"}[1m])",
           "format": "time_series",
-          "hide": true,
           "intervalFactor": 1,
-          "legendFormat": "{{ instance }} readOnly",
+          "legendFormat": "{{ device }}",
           "refId": "A"
-        },
-        {
-          "expr": "apiserver_current_inflight_requests{requestKind=\"mutating\"}",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{ instance }} mutating",
-          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "apiserver_current_inflight_requests",
+      "title": "node_disk_read_bytes_total rate",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 12,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "expr": "irate(node_disk_reads_completed_total{instance=\"$instance\"}[1m])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ device }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "node_disk_reads_completed_total rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -552,7 +552,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -560,7 +559,7 @@
         "x": 0,
         "y": 27
       },
-      "id": 13,
+      "id": 16,
       "legend": {
         "avg": false,
         "current": false,
@@ -573,7 +572,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
+      "nullPointMode": "connected",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -581,13 +580,13 @@
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
-      "steppedLine": false,
+      "steppedLine": true,
       "targets": [
         {
-          "expr": "apiserver_registered_watchers",
+          "expr": "irate(node_disk_written_bytes_total{instance=\"$instance\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "{{ device }}",
           "refId": "A"
         }
       ],
@@ -595,10 +594,178 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "apiserver_registered_watchers",
+      "title": "node_disk_written_bytes_total rate",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 27
+      },
+      "id": 14,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "expr": "irate(node_disk_writes_completed_total{instance=\"$instance\"}[1m])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ device }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "node_disk_writes_completed_total rate",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "expr": "node_disk_io_now{instance=\"$instance\"} > 0",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{device}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "node_disk_io_now",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
         "value_type": "individual"
       },
       "type": "graph",
@@ -638,11 +805,38 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "10.0.37.13:9100",
+          "value": "10.0.37.13:9100"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(node_load1, instance)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Node",
+        "multi": false,
+        "name": "instance",
+        "options": [],
+        "query": "label_values(node_load1, instance)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "2019-01-29T19:46:11.000Z",
-    "to": "2019-01-29T21:28:52.184Z"
+    "from": "2019-01-31T05:19:15.555Z",
+    "to": "2019-01-31T06:32:20.740Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -670,7 +864,7 @@
     ]
   },
   "timezone": "",
-  "title": "Kube ApiServer",
-  "uid": "A9gUixlmk",
-  "version": 8
+  "title": "Node-exporter",
+  "uid": "1Xgi-xlik",
+  "version": 2
 }

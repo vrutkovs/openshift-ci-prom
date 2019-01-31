@@ -7,5 +7,7 @@ Prometheus data from CI run
 * Open Grafana at http://localhost:3000, add Prometheus source at 'http://<any valid IP>:9090'
   Use `podman inspect` to find out Prometheus IP or use internal/public IP, as both services are 
   listening on 0.0.0.0
-* Load dashboards from files
+* Go to Configuration - Preferences and set Timezone to UTC
+  Both server logs and prometheus data are stored in UTC
+* Import dashboards from files
 * Adjust the time in range selector

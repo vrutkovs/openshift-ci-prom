@@ -16,6 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 4,
+  "iteration": 1548925327508,
   "links": [],
   "panels": [
     {
@@ -55,27 +56,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "namespace:container_cpu_usage_seconds_total:sum_rate{namespace=~\"(openshift|kube).*\"}",
+          "expr": "namespace:container_cpu_usage_seconds_total:sum_rate{namespace=\"$namespace\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
           "legendFormat": "{{ namespace }}",
           "refId": "A"
-        },
-        {
-          "expr": "namespace:container_cpu_usage_seconds_total:sum_rate{namespace=~\"e2e.*\"}",
-          "format": "time_series",
-          "hide": true,
-          "intervalFactor": 1,
-          "legendFormat": "{{ namespace }}",
-          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Namespace CPU use time",
+      "title": "CPU use time",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -149,20 +142,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "namespace:container_memory_usage_bytes:sum{namespace=~\"(openshift|kube).*\"}",
+          "expr": "namespace:container_memory_usage_bytes:sum{namespace=\"$namespace\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
           "legendFormat": "{{ namespace }}",
           "refId": "A"
-        },
-        {
-          "expr": "namespace:container_memory_usage_bytes:sum{namespace=~\"e2e.*\"}",
-          "format": "time_series",
-          "hide": true,
-          "intervalFactor": 1,
-          "legendFormat": "{{ namespace }}",
-          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -205,6 +190,201 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kube_pod_status_phase{namespace=\"$namespace\"}==1",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ pod }} {{ phase }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Pod Phases",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kube_pod_container_status_last_terminated_reason{namespace=\"$namespace\"} > 0",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{ pod }} {{ container }} {{ reason }}",
+          "refId": "A"
+        },
+        {
+          "expr": "kube_pod_container_status_restarts_total{namespace=\"$namespace\"} > 0",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{ pod }} {{ container }} restart",
+          "refId": "B"
+        },
+        {
+          "expr": "kube_pod_container_status_waiting_reason{namespace=\"$namespace\"}",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{ pod }} {{ container }} {{ reason }}",
+          "refId": "C"
+        },
+        {
+          "expr": "kube_pod_container_status_terminated_reason{namespace=\"$namespace\"} > 0",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{ pod }} {{ container }} {{ reason }}",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Container Statuses",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
@@ -212,11 +392,1189 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "e2e-test-cli-deployment-g7ndv",
+          "value": "e2e-test-cli-deployment-g7ndv"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(kube_pod_info, namespace)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Namespaces",
+        "multi": false,
+        "name": "namespace",
+        "options": [
+          {
+            "selected": false,
+            "text": "e2e-test-build-multistage-mhplx",
+            "value": "e2e-test-build-multistage-mhplx"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-build-pruning-6gdh2",
+            "value": "e2e-test-build-pruning-6gdh2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-build-pruning-8kj6r",
+            "value": "e2e-test-build-pruning-8kj6r"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-build-pruning-k7fmv",
+            "value": "e2e-test-build-pruning-k7fmv"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-2bchq",
+            "value": "e2e-test-cli-deployment-2bchq"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-77gct",
+            "value": "e2e-test-cli-deployment-77gct"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-78rzh",
+            "value": "e2e-test-cli-deployment-78rzh"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-88hlc",
+            "value": "e2e-test-cli-deployment-88hlc"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-cwjcn",
+            "value": "e2e-test-cli-deployment-cwjcn"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-dclzl",
+            "value": "e2e-test-cli-deployment-dclzl"
+          },
+          {
+            "selected": true,
+            "text": "e2e-test-cli-deployment-g7ndv",
+            "value": "e2e-test-cli-deployment-g7ndv"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-knv5f",
+            "value": "e2e-test-cli-deployment-knv5f"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-ktvq5",
+            "value": "e2e-test-cli-deployment-ktvq5"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-mhrjm",
+            "value": "e2e-test-cli-deployment-mhrjm"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-rqn6z",
+            "value": "e2e-test-cli-deployment-rqn6z"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-s6ksg",
+            "value": "e2e-test-cli-deployment-s6ksg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-smjbb",
+            "value": "e2e-test-cli-deployment-smjbb"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-srx69",
+            "value": "e2e-test-cli-deployment-srx69"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-cli-deployment-tf4m5",
+            "value": "e2e-test-cli-deployment-tf4m5"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-docker-build-pullsecret-l7llx",
+            "value": "e2e-test-docker-build-pullsecret-l7llx"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-mongodb-create-h7x68",
+            "value": "e2e-test-mongodb-create-h7x68"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-multicast-kn6cl",
+            "value": "e2e-test-multicast-kn6cl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-multicast-kv2dq",
+            "value": "e2e-test-multicast-kv2dq"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-new-app-cv487",
+            "value": "e2e-test-new-app-cv487"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-prometheus-ts4lg",
+            "value": "e2e-test-prometheus-ts4lg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-router-reencrypt-njmhr",
+            "value": "e2e-test-router-reencrypt-njmhr"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-router-scoped-qgfrk",
+            "value": "e2e-test-router-scoped-qgfrk"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-router-scoped-qmb7p",
+            "value": "e2e-test-router-scoped-qmb7p"
+          },
+          {
+            "selected": false,
+            "text": "e2e-test-router-stress-m8tg9",
+            "value": "e2e-test-router-stress-m8tg9"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-configmap-2p89d",
+            "value": "e2e-tests-configmap-2p89d"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-configmap-7xkww",
+            "value": "e2e-tests-configmap-7xkww"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-configmap-llhq7",
+            "value": "e2e-tests-configmap-llhq7"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-configmap-sk8x2",
+            "value": "e2e-tests-configmap-sk8x2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-container-lifecycle-hook-7b2fx",
+            "value": "e2e-tests-container-lifecycle-hook-7b2fx"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-container-lifecycle-hook-trkgc",
+            "value": "e2e-tests-container-lifecycle-hook-trkgc"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-container-probe-2xsvt",
+            "value": "e2e-tests-container-probe-2xsvt"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-container-probe-hdwn5",
+            "value": "e2e-tests-container-probe-hdwn5"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-container-probe-z68kk",
+            "value": "e2e-tests-container-probe-z68kk"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-cronjob-v9pnp",
+            "value": "e2e-tests-cronjob-v9pnp"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-cronjob-vnb8b",
+            "value": "e2e-tests-cronjob-vnb8b"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-deployment-5bnhh",
+            "value": "e2e-tests-deployment-5bnhh"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-deployment-nppgz",
+            "value": "e2e-tests-deployment-nppgz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-disruption-9tlrf",
+            "value": "e2e-tests-disruption-9tlrf"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-disruption-c7gtt",
+            "value": "e2e-tests-disruption-c7gtt"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-disruption-g69rc",
+            "value": "e2e-tests-disruption-g69rc"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-disruption-lcqhf",
+            "value": "e2e-tests-disruption-lcqhf"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-disruption-s9shp",
+            "value": "e2e-tests-disruption-s9shp"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-disruption-z7f5l",
+            "value": "e2e-tests-disruption-z7f5l"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-dns-4hzpl",
+            "value": "e2e-tests-dns-4hzpl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-dns-qrf9q",
+            "value": "e2e-tests-dns-qrf9q"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-dns-rh464",
+            "value": "e2e-tests-dns-rh464"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-downward-api-2vkcl",
+            "value": "e2e-tests-downward-api-2vkcl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-downward-api-qjtcj",
+            "value": "e2e-tests-downward-api-qjtcj"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-e2e-kubelet-etc-hosts-tbpj8",
+            "value": "e2e-tests-e2e-kubelet-etc-hosts-tbpj8"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-emptydir-9h2mw",
+            "value": "e2e-tests-emptydir-9h2mw"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-emptydir-b7p8k",
+            "value": "e2e-tests-emptydir-b7p8k"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-emptydir-gsjh4",
+            "value": "e2e-tests-emptydir-gsjh4"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-emptydir-gtpw2",
+            "value": "e2e-tests-emptydir-gtpw2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-emptydir-j5jdr",
+            "value": "e2e-tests-emptydir-j5jdr"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-gc-dv6nf",
+            "value": "e2e-tests-gc-dv6nf"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-init-container-9ndhd",
+            "value": "e2e-tests-init-container-9ndhd"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-job-fhd6q",
+            "value": "e2e-tests-job-fhd6q"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-job-gmhp4",
+            "value": "e2e-tests-job-gmhp4"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-job-hqtq7",
+            "value": "e2e-tests-job-hqtq7"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-job-nbsvg",
+            "value": "e2e-tests-job-nbsvg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-4fmgd",
+            "value": "e2e-tests-kubectl-4fmgd"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-4tp2v",
+            "value": "e2e-tests-kubectl-4tp2v"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-9gzn2",
+            "value": "e2e-tests-kubectl-9gzn2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-9kj2c",
+            "value": "e2e-tests-kubectl-9kj2c"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-jgq65",
+            "value": "e2e-tests-kubectl-jgq65"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-nm6c8",
+            "value": "e2e-tests-kubectl-nm6c8"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-swt7t",
+            "value": "e2e-tests-kubectl-swt7t"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-kubectl-v5zhl",
+            "value": "e2e-tests-kubectl-v5zhl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-limitrange-z67lq",
+            "value": "e2e-tests-limitrange-z67lq"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-net-services1-8nm2s",
+            "value": "e2e-tests-net-services1-8nm2s"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-net-services1-rxc95",
+            "value": "e2e-tests-net-services1-rxc95"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-net-services2-kt9nh",
+            "value": "e2e-tests-net-services2-kt9nh"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-nettest-4qxql",
+            "value": "e2e-tests-nettest-4qxql"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-62zll",
+            "value": "e2e-tests-network-policy-62zll"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-8d7bv",
+            "value": "e2e-tests-network-policy-8d7bv"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-9mmqw",
+            "value": "e2e-tests-network-policy-9mmqw"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-b-fc44m",
+            "value": "e2e-tests-network-policy-b-fc44m"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-jscmh",
+            "value": "e2e-tests-network-policy-jscmh"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-kfpf7",
+            "value": "e2e-tests-network-policy-kfpf7"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-mk6qv",
+            "value": "e2e-tests-network-policy-mk6qv"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-rjz9m",
+            "value": "e2e-tests-network-policy-rjz9m"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-tps6r",
+            "value": "e2e-tests-network-policy-tps6r"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-twwgg",
+            "value": "e2e-tests-network-policy-twwgg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-network-policy-vstbl",
+            "value": "e2e-tests-network-policy-vstbl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-2npth",
+            "value": "e2e-tests-persistent-local-volumes-test-2npth"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-6m4cg",
+            "value": "e2e-tests-persistent-local-volumes-test-6m4cg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-6ntd7",
+            "value": "e2e-tests-persistent-local-volumes-test-6ntd7"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-75j55",
+            "value": "e2e-tests-persistent-local-volumes-test-75j55"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-9wsct",
+            "value": "e2e-tests-persistent-local-volumes-test-9wsct"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-bqdpl",
+            "value": "e2e-tests-persistent-local-volumes-test-bqdpl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-c5tdl",
+            "value": "e2e-tests-persistent-local-volumes-test-c5tdl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-ckt59",
+            "value": "e2e-tests-persistent-local-volumes-test-ckt59"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-fkfpn",
+            "value": "e2e-tests-persistent-local-volumes-test-fkfpn"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-fx7l2",
+            "value": "e2e-tests-persistent-local-volumes-test-fx7l2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-g8288",
+            "value": "e2e-tests-persistent-local-volumes-test-g8288"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-ggj4v",
+            "value": "e2e-tests-persistent-local-volumes-test-ggj4v"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-lz7qb",
+            "value": "e2e-tests-persistent-local-volumes-test-lz7qb"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-mgx54",
+            "value": "e2e-tests-persistent-local-volumes-test-mgx54"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-n2br4",
+            "value": "e2e-tests-persistent-local-volumes-test-n2br4"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-qn4sb",
+            "value": "e2e-tests-persistent-local-volumes-test-qn4sb"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-rth75",
+            "value": "e2e-tests-persistent-local-volumes-test-rth75"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-s2lrq",
+            "value": "e2e-tests-persistent-local-volumes-test-s2lrq"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-sdxgg",
+            "value": "e2e-tests-persistent-local-volumes-test-sdxgg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-v6n2g",
+            "value": "e2e-tests-persistent-local-volumes-test-v6n2g"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-vb4wg",
+            "value": "e2e-tests-persistent-local-volumes-test-vb4wg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-vpslr",
+            "value": "e2e-tests-persistent-local-volumes-test-vpslr"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-wnmfw",
+            "value": "e2e-tests-persistent-local-volumes-test-wnmfw"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-persistent-local-volumes-test-xsmc2",
+            "value": "e2e-tests-persistent-local-volumes-test-xsmc2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pod-network-test-8jv5b",
+            "value": "e2e-tests-pod-network-test-8jv5b"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pods-5sjmw",
+            "value": "e2e-tests-pods-5sjmw"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pods-98s9s",
+            "value": "e2e-tests-pods-98s9s"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pods-kpq27",
+            "value": "e2e-tests-pods-kpq27"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-port-forwarding-2mtnr",
+            "value": "e2e-tests-port-forwarding-2mtnr"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-port-forwarding-8vgcz",
+            "value": "e2e-tests-port-forwarding-8vgcz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-port-forwarding-kkbs4",
+            "value": "e2e-tests-port-forwarding-kkbs4"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-port-forwarding-ll6vg",
+            "value": "e2e-tests-port-forwarding-ll6vg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-4dcmq",
+            "value": "e2e-tests-projected-4dcmq"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-5s2td",
+            "value": "e2e-tests-projected-5s2td"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-7jxzz",
+            "value": "e2e-tests-projected-7jxzz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-lcvft",
+            "value": "e2e-tests-projected-lcvft"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-ld7dz",
+            "value": "e2e-tests-projected-ld7dz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-lhcpj",
+            "value": "e2e-tests-projected-lhcpj"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-q2x2w",
+            "value": "e2e-tests-projected-q2x2w"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-projected-zbzqc",
+            "value": "e2e-tests-projected-zbzqc"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pv-hrzz6",
+            "value": "e2e-tests-pv-hrzz6"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pv-jk6qv",
+            "value": "e2e-tests-pv-jk6qv"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pv-rpd5j",
+            "value": "e2e-tests-pv-rpd5j"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pv-vqqrg",
+            "value": "e2e-tests-pv-vqqrg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-pvc-protection-55hjq",
+            "value": "e2e-tests-pvc-protection-55hjq"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-replicaset-rkpwh",
+            "value": "e2e-tests-replicaset-rkpwh"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-replication-controller-lncxf",
+            "value": "e2e-tests-replication-controller-lncxf"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-resourcequota-9j57g",
+            "value": "e2e-tests-resourcequota-9j57g"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-resourcequota-priorityclass-5xg8d",
+            "value": "e2e-tests-resourcequota-priorityclass-5xg8d"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-secrets-ljwdm",
+            "value": "e2e-tests-secrets-ljwdm"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-secrets-vjl9p",
+            "value": "e2e-tests-secrets-vjl9p"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-security-context-nxlcz",
+            "value": "e2e-tests-security-context-nxlcz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-security-context-test-86sjf",
+            "value": "e2e-tests-security-context-test-86sjf"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-security-context-test-w4kxc",
+            "value": "e2e-tests-security-context-test-w4kxc"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-services-75tll",
+            "value": "e2e-tests-services-75tll"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-services-8px9p",
+            "value": "e2e-tests-services-8px9p"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-services-bvjt2",
+            "value": "e2e-tests-services-bvjt2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-services-fsln2",
+            "value": "e2e-tests-services-fsln2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-4dx9b",
+            "value": "e2e-tests-statefulset-4dx9b"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-8pgpt",
+            "value": "e2e-tests-statefulset-8pgpt"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-c8j94",
+            "value": "e2e-tests-statefulset-c8j94"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-cxj7l",
+            "value": "e2e-tests-statefulset-cxj7l"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-fc9j2",
+            "value": "e2e-tests-statefulset-fc9j2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-fcr2n",
+            "value": "e2e-tests-statefulset-fcr2n"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-gl8vk",
+            "value": "e2e-tests-statefulset-gl8vk"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-k5knz",
+            "value": "e2e-tests-statefulset-k5knz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-w6jrh",
+            "value": "e2e-tests-statefulset-w6jrh"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-xv9hl",
+            "value": "e2e-tests-statefulset-xv9hl"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-statefulset-zcgww",
+            "value": "e2e-tests-statefulset-zcgww"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-subpath-985z6",
+            "value": "e2e-tests-subpath-985z6"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-subpath-qlxrr",
+            "value": "e2e-tests-subpath-qlxrr"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-subpath-r2tcj",
+            "value": "e2e-tests-subpath-r2tcj"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-tables-kbz5c",
+            "value": "e2e-tests-tables-kbz5c"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-var-expansion-z8gjj",
+            "value": "e2e-tests-var-expansion-z8gjj"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volume-provisioning-dsg6t",
+            "value": "e2e-tests-volume-provisioning-dsg6t"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volume-provisioning-njhxj",
+            "value": "e2e-tests-volume-provisioning-njhxj"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-498s2",
+            "value": "e2e-tests-volumes-498s2"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-4p56b",
+            "value": "e2e-tests-volumes-4p56b"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-5sd4m",
+            "value": "e2e-tests-volumes-5sd4m"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-748fm",
+            "value": "e2e-tests-volumes-748fm"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-8f4w5",
+            "value": "e2e-tests-volumes-8f4w5"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-8tchx",
+            "value": "e2e-tests-volumes-8tchx"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-95t5g",
+            "value": "e2e-tests-volumes-95t5g"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-9bqjg",
+            "value": "e2e-tests-volumes-9bqjg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-b5bxp",
+            "value": "e2e-tests-volumes-b5bxp"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-c5p5c",
+            "value": "e2e-tests-volumes-c5p5c"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-df899",
+            "value": "e2e-tests-volumes-df899"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-fj2pg",
+            "value": "e2e-tests-volumes-fj2pg"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-fz5vx",
+            "value": "e2e-tests-volumes-fz5vx"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-gk8s9",
+            "value": "e2e-tests-volumes-gk8s9"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-gpjnc",
+            "value": "e2e-tests-volumes-gpjnc"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-j25sz",
+            "value": "e2e-tests-volumes-j25sz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-kfmhf",
+            "value": "e2e-tests-volumes-kfmhf"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-kwk77",
+            "value": "e2e-tests-volumes-kwk77"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-lf49t",
+            "value": "e2e-tests-volumes-lf49t"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-ng8gz",
+            "value": "e2e-tests-volumes-ng8gz"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-nkvck",
+            "value": "e2e-tests-volumes-nkvck"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-q47jp",
+            "value": "e2e-tests-volumes-q47jp"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-q4xx6",
+            "value": "e2e-tests-volumes-q4xx6"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-qbg4k",
+            "value": "e2e-tests-volumes-qbg4k"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-rw95g",
+            "value": "e2e-tests-volumes-rw95g"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-s7wl8",
+            "value": "e2e-tests-volumes-s7wl8"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-skhhs",
+            "value": "e2e-tests-volumes-skhhs"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-xb88t",
+            "value": "e2e-tests-volumes-xb88t"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-zld7x",
+            "value": "e2e-tests-volumes-zld7x"
+          },
+          {
+            "selected": false,
+            "text": "e2e-tests-volumes-zlt6x",
+            "value": "e2e-tests-volumes-zlt6x"
+          },
+          {
+            "selected": false,
+            "text": "kube-system",
+            "value": "kube-system"
+          },
+          {
+            "selected": false,
+            "text": "openshift-apiserver",
+            "value": "openshift-apiserver"
+          },
+          {
+            "selected": false,
+            "text": "openshift-apiserver-operator",
+            "value": "openshift-apiserver-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-authentication-operator",
+            "value": "openshift-authentication-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cloud-credential-operator",
+            "value": "openshift-cloud-credential-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cluster-api",
+            "value": "openshift-cluster-api"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cluster-machine-approver",
+            "value": "openshift-cluster-machine-approver"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cluster-node-tuning-operator",
+            "value": "openshift-cluster-node-tuning-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cluster-samples-operator",
+            "value": "openshift-cluster-samples-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cluster-storage-operator",
+            "value": "openshift-cluster-storage-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-cluster-version",
+            "value": "openshift-cluster-version"
+          },
+          {
+            "selected": false,
+            "text": "openshift-console",
+            "value": "openshift-console"
+          },
+          {
+            "selected": false,
+            "text": "openshift-console-operator",
+            "value": "openshift-console-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-controller-manager",
+            "value": "openshift-controller-manager"
+          },
+          {
+            "selected": false,
+            "text": "openshift-controller-manager-operator",
+            "value": "openshift-controller-manager-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-core-operators",
+            "value": "openshift-core-operators"
+          },
+          {
+            "selected": false,
+            "text": "openshift-dns",
+            "value": "openshift-dns"
+          },
+          {
+            "selected": false,
+            "text": "openshift-dns-operator",
+            "value": "openshift-dns-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-image-registry",
+            "value": "openshift-image-registry"
+          },
+          {
+            "selected": false,
+            "text": "openshift-ingress",
+            "value": "openshift-ingress"
+          },
+          {
+            "selected": false,
+            "text": "openshift-ingress-operator",
+            "value": "openshift-ingress-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-kube-apiserver",
+            "value": "openshift-kube-apiserver"
+          },
+          {
+            "selected": false,
+            "text": "openshift-kube-apiserver-operator",
+            "value": "openshift-kube-apiserver-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-kube-controller-manager",
+            "value": "openshift-kube-controller-manager"
+          },
+          {
+            "selected": false,
+            "text": "openshift-kube-controller-manager-operator",
+            "value": "openshift-kube-controller-manager-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-kube-scheduler",
+            "value": "openshift-kube-scheduler"
+          },
+          {
+            "selected": false,
+            "text": "openshift-kube-scheduler-operator",
+            "value": "openshift-kube-scheduler-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-machine-config-operator",
+            "value": "openshift-machine-config-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-marketplace",
+            "value": "openshift-marketplace"
+          },
+          {
+            "selected": false,
+            "text": "openshift-monitoring",
+            "value": "openshift-monitoring"
+          },
+          {
+            "selected": false,
+            "text": "openshift-multus",
+            "value": "openshift-multus"
+          },
+          {
+            "selected": false,
+            "text": "openshift-network-operator",
+            "value": "openshift-network-operator"
+          },
+          {
+            "selected": false,
+            "text": "openshift-operator-lifecycle-manager",
+            "value": "openshift-operator-lifecycle-manager"
+          },
+          {
+            "selected": false,
+            "text": "openshift-sdn",
+            "value": "openshift-sdn"
+          },
+          {
+            "selected": false,
+            "text": "openshift-service-cert-signer",
+            "value": "openshift-service-cert-signer"
+          }
+        ],
+        "query": "label_values(kube_pod_info, namespace)",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "2019-01-29T19:43:12.377Z",
-    "to": "2019-01-29T21:37:41.234Z"
+    "from": "2019-01-31T05:19:20.816Z",
+    "to": "2019-01-31T06:45:33.060Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -244,7 +1602,7 @@
     ]
   },
   "timezone": "",
-  "title": "Namespaces",
+  "title": "Namespace details",
   "uid": "1UZASblmk",
-  "version": 3
+  "version": 2
 }

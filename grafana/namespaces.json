@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 4,
-  "iteration": 1548925327508,
+  "iteration": 1548929279464,
   "links": [],
   "panels": [
     {
@@ -385,6 +385,104 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kube_daemonset_metadata_generation{namespace=\"$namespace\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "DS {{ daemonset }}",
+          "refId": "A"
+        },
+        {
+          "expr": "kube_deployment_metadata_generation{namespace=\"$namespace\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Deployment {{ deployment }}",
+          "refId": "B"
+        },
+        {
+          "expr": "kube_statefulset_metadata_generation{namespace=\"$namespace\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "SS {{ statefulset }}",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Generation changes",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
@@ -397,8 +495,8 @@
         "allValue": null,
         "current": {
           "tags": [],
-          "text": "e2e-test-cli-deployment-g7ndv",
-          "value": "e2e-test-cli-deployment-g7ndv"
+          "text": "openshift-sdn",
+          "value": "openshift-sdn"
         },
         "datasource": "Prometheus",
         "definition": "label_values(kube_pod_info, namespace)",
@@ -459,7 +557,7 @@
             "value": "e2e-test-cli-deployment-dclzl"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "e2e-test-cli-deployment-g7ndv",
             "value": "e2e-test-cli-deployment-g7ndv"
           },
@@ -1549,7 +1647,7 @@
             "value": "openshift-operator-lifecycle-manager"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "openshift-sdn",
             "value": "openshift-sdn"
           },
@@ -1573,8 +1671,8 @@
     ]
   },
   "time": {
-    "from": "2019-01-31T05:19:20.816Z",
-    "to": "2019-01-31T06:45:33.060Z"
+    "from": "2019-01-29T19:43:12.377Z",
+    "to": "2019-01-29T21:37:41.234Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1604,5 +1702,5 @@
   "timezone": "",
   "title": "Namespace details",
   "uid": "1UZASblmk",
-  "version": 2
+  "version": 3
 }
